@@ -30,6 +30,10 @@ export const normalizeLocale = (locale: string) => {
       return 'en-US';
     }
 
+    case 'ar': {
+      return 'ar_EG';
+    }
+
     default: {
       return locale;
     }
