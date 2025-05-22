@@ -46,6 +46,11 @@ const displayMode = (s: AgentStoreState) => {
   return chatConfig.displayMode || 'chat';
 };
 
+const bubbleRenderMode = (s: AgentStoreState) => {
+  const chatConfig = currentAgentChatConfig(s);
+  return chatConfig.bubbleRenderMode || 'smooth';
+};
+
 const enableHistoryDivider =
   (historyLength: number, currentIndex: number) => (s: AgentStoreState) => {
     const config = currentAgentChatConfig(s);
@@ -61,6 +66,7 @@ export const agentChatConfigSelectors = {
   agentSearchMode,
   currentChatConfig: currentAgentChatConfig,
   displayMode,
+  bubbleRenderMode,
   enableHistoryCount,
   enableHistoryDivider,
   historyCount,

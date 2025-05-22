@@ -68,7 +68,10 @@ const Item = memo<ChatListItemProps>(
     const { t } = useTranslation('common');
     const { styles, cx } = useStyles();
 
-    const type = useAgentStore(agentChatConfigSelectors.displayMode);
+    const [type, bubbleRenderMode] = useAgentStore((s) => [
+      agentChatConfigSelectors.displayMode(s),
+      agentChatConfigSelectors.bubbleRenderMode(s),
+    ]);
     const item = useChatStore(chatSelectors.getMessageById(id), isEqual);
 
     const [
@@ -89,6 +92,7 @@ const Item = memo<ChatListItemProps>(
 
     // when the message is in RAG flow or the AI generating, it should be in loading state
     const isProcessing = isInRAGFlow || generating;
+    const bubbleAnimation = bubbleRenderMode === 'smooth' ? generating : false;
 
     const onAvatarsClick = useAvatarsClick(item?.role);
 
@@ -168,7 +172,7 @@ const Item = memo<ChatListItemProps>(
 
     const markdownProps = useMemo(
       () => ({
-        animated: generating,
+        animated: bubbleAnimation,
         citations: item?.role === 'user' ? undefined : item?.search?.citations,
         components,
         customRender: markdownCustomRender,
@@ -184,7 +188,7 @@ const Item = memo<ChatListItemProps>(
               // if the citations's url and title are all the same, we should not show the citations
               item?.search?.citations.every((item) => item.title !== item.url),
       }),
-      [generating, components, markdownCustomRender, item?.role, item?.search],
+      [bubbleAnimation, components, markdownCustomRender, item?.role, item?.search],
     );
 
     const onChange = useCallback((value: string) => updateMessageContent(id, value), [id]);

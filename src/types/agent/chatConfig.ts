@@ -16,6 +16,8 @@ export interface LobeAgentChatConfig {
 
   enableMaxTokens?: boolean;
 
+  bubbleRenderMode?: 'smooth' | 'typing';
+
   /**
    * 是否开启推理
    */

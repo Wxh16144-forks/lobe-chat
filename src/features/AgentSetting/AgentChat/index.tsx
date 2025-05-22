@@ -51,6 +51,41 @@ const AgentChat = memo(() => {
         minWidth: undefined,
         name: 'displayMode',
       },
+      // todo: 平滑/打字
+      {
+        children: (
+          <ImageSelect
+            height={86}
+            options={[
+              {
+                icon: MessagesSquare,
+                img: imageUrl(`chatmode_chat_${isDarkMode ? 'dark' : 'light'}.webp`),
+                // img: `https://placehold.co/600x400/webp?text=Smooth`,
+                // label: t('settingChat.chatStyleType.type.chat'),
+                label: '平滑过渡',
+                value: 'smooth',
+              },
+              {
+                icon: LayoutList,
+                img: imageUrl(`chatmode_docs_${isDarkMode ? 'dark' : 'light'}.webp`),
+                // img: `https://placehold.co/600x400/webp?text=Typing`,
+                // label: t('settingChat.chatStyleType.type.docs'),
+                label: '打字',
+                // value: 'docs',
+                value: 'typing',
+              },
+            ]}
+            style={{
+              marginRight: 2,
+            }}
+            unoptimized={false}
+            width={144}
+          />
+        ),
+        label: t('settingChat.chatStyleType.title'),
+        minWidth: undefined,
+        name: 'bubbleRenderMode',
+      },
       {
         children: <TextArea placeholder={t('settingChat.inputTemplate.placeholder')} />,
         desc: t('settingChat.inputTemplate.desc'),
