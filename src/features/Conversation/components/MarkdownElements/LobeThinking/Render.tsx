@@ -15,14 +15,14 @@ const Render = memo<MarkdownElementProps>(({ children, id }) => {
     const message = chatSelectors.getMessageById(id)(s);
     return [!isTagClosed(ARTIFACT_THINKING_TAG, message?.content)];
   });
-  const bubbleTransition = useUserStore(userGeneralSettingsSelectors.bubbleTransition);
+  const transitionMode = useUserStore(userGeneralSettingsSelectors.transitionMode);
 
   return (
     <Thinking
       content={children as string}
       style={{ width: isGenerating ? '100%' : undefined }}
       thinking={isGenerating}
-      thinkingAnimated={bubbleTransition === 'smooth' ? isGenerating : false}
+      thinkingAnimated={transitionMode === 'smooth' ? isGenerating : false}
     />
   );
 });

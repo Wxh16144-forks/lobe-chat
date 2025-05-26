@@ -245,6 +245,14 @@ export default {
       title: 'Mermaid 主题',
     },
     title: '聊天外观',
+    transitionMode: {
+      desc: '聊天消息的过渡动画',
+      options: {
+        smooth: '平滑',
+        stream: '流式',
+      },
+      title: '过渡动画',
+    },
   },
   settingCommon: {
     lang: {

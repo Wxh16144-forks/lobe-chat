@@ -8,14 +8,14 @@ const primaryColor = (s: UserStore) => generalConfig(s).primaryColor;
 const fontSize = (s: UserStore) => generalConfig(s).fontSize;
 const highlighterTheme = (s: UserStore) => generalConfig(s).highlighterTheme;
 const mermaidTheme = (s: UserStore) => generalConfig(s).mermaidTheme;
-const bubbleTransition = (s: UserStore) => generalConfig(s).bubbleTransition || 'smooth';
+const transitionMode = (s: UserStore) => generalConfig(s).transitionMode || 'smooth';
 
 export const userGeneralSettingsSelectors = {
-  bubbleTransition,
   config: generalConfig,
   fontSize,
   highlighterTheme,
   mermaidTheme,
   neutralColor,
   primaryColor,
+  transitionMode,
 };

@@ -72,7 +72,7 @@ const Item = memo<ChatListItemProps>(
 
     const type = useAgentStore(agentChatConfigSelectors.displayMode);
     const item = useChatStore(chatSelectors.getMessageById(id), isEqual);
-    const bubbleTransition = useUserStore(userGeneralSettingsSelectors.bubbleTransition);
+    const transitionMode = useUserStore(userGeneralSettingsSelectors.transitionMode);
 
     const [
       isMessageLoading,
@@ -92,7 +92,7 @@ const Item = memo<ChatListItemProps>(
 
     // when the message is in RAG flow or the AI generating, it should be in loading state
     const isProcessing = isInRAGFlow || generating;
-    const animated = bubbleTransition === 'smooth' && generating;
+    const animated = transitionMode === 'smooth' && generating;
 
     const onAvatarsClick = useAvatarsClick(item?.role);
 

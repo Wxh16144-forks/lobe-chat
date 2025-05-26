@@ -25,7 +25,7 @@ const Render = memo<MarkdownElementProps>(({ children, id }) => {
     return message?.search?.citations;
   });
 
-  const bubbleTransition = useUserStore(userGeneralSettingsSelectors.bubbleTransition);
+  const transitionMode = useUserStore(userGeneralSettingsSelectors.transitionMode);
 
   if (!isGenerating && !children) return;
 
@@ -34,7 +34,7 @@ const Render = memo<MarkdownElementProps>(({ children, id }) => {
       citations={citations}
       content={children as string}
       thinking={isGenerating}
-      thinkingAnimated={bubbleTransition === 'smooth' ? isGenerating : false}
+      thinkingAnimated={transitionMode === 'smooth' ? isGenerating : false}
     />
   );
 });

@@ -361,7 +361,7 @@ class ChatService {
     }
 
     const userPreferSmoothing =
-      userGeneralSettingsSelectors.bubbleTransition(getUserStoreState()) === 'typing';
+      userGeneralSettingsSelectors.transitionMode(getUserStoreState()) === 'stream';
 
     return fetchSSE(API_ENDPOINTS.chat(sdkType), {
       body: JSON.stringify(payload),

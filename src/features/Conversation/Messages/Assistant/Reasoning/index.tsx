@@ -14,14 +14,14 @@ interface ReasoningProps {
 
 const Reasoning = memo<ReasoningProps>(({ content = '', duration, id }) => {
   const isReasoning = useChatStore(aiChatSelectors.isMessageInReasoning(id));
-  const bubbleTransition = useUserStore(userGeneralSettingsSelectors.bubbleTransition);
+  const transitionMode = useUserStore(userGeneralSettingsSelectors.transitionMode);
 
   return (
     <Thinking
       content={content}
       duration={duration}
       thinking={isReasoning}
-      thinkingAnimated={bubbleTransition === 'smooth' ? isReasoning : false}
+      thinkingAnimated={transitionMode === 'smooth' ? isReasoning : false}
     />
   );
 });
