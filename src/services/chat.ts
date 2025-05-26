@@ -29,6 +29,7 @@ import {
   modelConfigSelectors,
   modelProviderSelectors,
   preferenceSelectors,
+  userGeneralSettingsSelectors,
   userProfileSelectors,
 } from '@/store/user/selectors';
 import { WebBrowsingManifest } from '@/tools/web-browsing';
@@ -41,6 +42,7 @@ import { createErrorResponse } from '@/utils/errorResponse';
 import { FetchSSEOptions, fetchSSE, getMessageError } from '@/utils/fetch';
 import { genToolCallingName } from '@/utils/toolCall';
 import { createTraceHeader, getTraceId } from '@/utils/trace';
+import { SmoothingParams } from '@/types/llm';
 
 import { createHeaderWithAuth, createPayloadWithKeyVaults } from './_auth';
 import { API_ENDPOINTS } from './_url';
@@ -80,6 +82,12 @@ const findDeploymentName = (model: string, provider: string) => {
   }
 
   return deploymentId;
+};
+
+const normalizeSmoothing = (smoothing?: SmoothingParams | boolean) => {
+  return typeof smoothing === 'object'
+    ? smoothing
+    : { text: smoothing, toolsCalling: smoothing } satisfies SmoothingParams;
 };
 
 const isEnableFetchOnClient = (provider: string) => {
@@ -275,7 +283,7 @@ class ChatService {
   };
 
   getChatCompletion = async (params: Partial<ChatStreamPayload>, options?: FetchOptions) => {
-    const { signal } = options ?? {};
+    const { signal, smoothing } = options ?? {};
 
     const { provider = ModelProvider.OpenAI, ...res } = params;
 
@@ -352,6 +360,9 @@ class ChatService {
       sdkType = providerConfig?.settings.sdkType || 'openai';
     }
 
+    const userPreferSmoothing =
+      userGeneralSettingsSelectors.bubbleTransition(getUserStoreState()) === 'typing';
+
     return fetchSSE(API_ENDPOINTS.chat(sdkType), {
       body: JSON.stringify(payload),
       fetcher: fetcher,
@@ -362,10 +373,12 @@ class ChatService {
       onFinish: options?.onFinish,
       onMessageHandle: options?.onMessageHandle,
       signal,
-      smoothing:
-        providerConfig?.settings?.smoothing ||
-        // @deprecated in V2
-        providerConfig?.smoothing,
+      smoothing: merge(
+        {},
+        providerConfig?.settings?.smoothing || /** @deprecated in V2 */ providerConfig?.smoothing,
+        normalizeSmoothing(userPreferSmoothing),
+        normalizeSmoothing(smoothing),
+      )
     });
   };
 
