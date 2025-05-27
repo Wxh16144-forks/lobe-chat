@@ -22,7 +22,7 @@ const Render = memo<MarkdownElementProps>(({ children, id }) => {
       content={children as string}
       style={{ width: isGenerating ? '100%' : undefined }}
       thinking={isGenerating}
-      thinkingAnimated={transitionMode === 'smooth' ? isGenerating : false}
+      thinkingAnimated={transitionMode === 'smooth' && isGenerating}
     />
   );
 });
