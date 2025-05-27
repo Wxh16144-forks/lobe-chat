@@ -18,11 +18,11 @@ const data = `
 
 const streamingSpeed = 25; // ms
 
-interface MarkdownPreviewProps {
+interface AnimatedChatPreviewProps {
   animated?: boolean;
 }
 
-const MarkdownPreview = memo<MarkdownPreviewProps>(({ animated }) => {
+const AnimatedChatPreview = memo<AnimatedChatPreviewProps>(({ animated }) => {
   const [streamedContent, setStreamedContent] = useState('');
   const [isStreaming, setIsStreaming] = useState(true);
   const { t } = useTranslation('common');
@@ -87,11 +87,11 @@ const MarkdownPreview = memo<MarkdownPreviewProps>(({ animated }) => {
           animated: animated,
         }}
         message={streamedContent}
-        variant='bubble'
+        variant="bubble"
         width={'100%'}
       />
     </Block>
   );
 });
 
-export default MarkdownPreview;
+export default AnimatedChatPreview;

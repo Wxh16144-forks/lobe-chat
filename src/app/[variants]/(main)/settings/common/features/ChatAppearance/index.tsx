@@ -11,7 +11,6 @@ import {
   mermaidThemes,
 } from '@lobehub/ui';
 import { Skeleton } from 'antd';
-import { useThemeMode } from 'antd-style';
 import isEqual from 'fast-deep-equal';
 import { Loader2Icon } from 'lucide-react';
 import { memo, useState } from 'react';
@@ -21,9 +20,9 @@ import { FORM_STYLE } from '@/const/layoutTokens';
 import { useUserStore } from '@/store/user';
 import { settingsSelectors } from '@/store/user/selectors';
 
+import AnimatedChatPreview from './AnimatedChatPreview';
 import ChatPreview from './ChatPreview';
 import HighlighterPreview from './HighlighterPreview';
-import MarkdownPreview from './MarkdownPreview';
 import MermaidPreview from './MermaidPreview';
 
 const ChatAppearance = memo(() => {
@@ -31,7 +30,6 @@ const ChatAppearance = memo(() => {
   const { general } = useUserStore(settingsSelectors.currentSettings, isEqual);
   const [setSettings, isUserStateInit] = useUserStore((s) => [s.setSettings, s.isUserStateInit]);
   const [loading, setLoading] = useState(false);
-  const { isDarkMode } = useThemeMode();
 
   if (!isUserStateInit) return <Skeleton active paragraph={{ rows: 5 }} title={false} />;
 
@@ -39,7 +37,7 @@ const ChatAppearance = memo(() => {
     children: [
       {
         children: (
-          <MarkdownPreview
+          <AnimatedChatPreview
             animated={general.transitionMode === 'smooth'}
             key={general.transitionMode}
           />
