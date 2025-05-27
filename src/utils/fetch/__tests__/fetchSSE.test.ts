@@ -122,7 +122,7 @@ describe('fetchSSE', () => {
     });
   });
 
-  it.skip('should handle text event with smoothing correctly', async () => {
+  it('should handle text event with smoothing correctly', async () => {
     const mockOnMessageHandle = vi.fn();
     const mockOnFinish = vi.fn();
 
@@ -320,7 +320,19 @@ describe('fetchSSE', () => {
       smoothing: true,
     });
 
-    const expectedMessages = [{ text: 'Hello World', type: 'text' }];
+    const expectedMessages = [
+      { text: 'H', type: 'text' },
+      { text: 'e', type: 'text' },
+      { text: 'l', type: 'text' },
+      { text: 'l', type: 'text' },
+      { text: 'o', type: 'text' },
+      { text: ' ', type: 'text' },
+      { text: 'W', type: 'text' },
+      { text: 'o', type: 'text' },
+      { text: 'r', type: 'text' },
+      { text: 'l', type: 'text' },
+      { text: 'd', type: 'text' },
+    ];
 
     expectedMessages.forEach((message, index) => {
       expect(mockOnMessageHandle).toHaveBeenNthCalledWith(index + 1, message);
