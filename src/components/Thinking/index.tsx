@@ -80,98 +80,93 @@ interface ThinkingProps {
   thinkingAnimated?: boolean;
 }
 
-const Thinking = memo<ThinkingProps>(
-  ({ content, duration, thinking, style, citations, thinkingAnimated }) => {
-    const { t } = useTranslation(['components', 'common']);
-    const { styles, cx, theme } = useStyles();
+const Thinking = memo<ThinkingProps>((props) => {
+  const { content, duration, thinking, style, citations, thinkingAnimated } = props;
+  const { t } = useTranslation(['components', 'common']);
+  const { styles, cx, theme } = useStyles();
 
-    const [showDetail, setShowDetail] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
 
-    useEffect(() => {
-      setShowDetail(!!thinking);
-    }, [thinking]);
+  useEffect(() => {
+    setShowDetail(!!thinking);
+  }, [thinking]);
 
-    return (
+  return (
+    <Flexbox
+      className={cx(styles.container, showDetail && styles.expand)}
+      style={style}
+      width={'100%'}
+    >
       <Flexbox
-        className={cx(styles.container, showDetail && styles.expand)}
-        style={style}
+        className={cx(styles.header, showDetail && styles.headerExpand)}
+        distribution={'space-between'}
+        flex={1}
+        gap={8}
+        horizontal
+        onClick={() => {
+          setShowDetail(!showDetail);
+        }}
+        style={{ cursor: 'pointer' }}
         width={'100%'}
       >
-        <Flexbox
-          className={cx(styles.header, showDetail && styles.headerExpand)}
-          distribution={'space-between'}
-          flex={1}
-          gap={8}
-          horizontal
-          onClick={() => {
-            setShowDetail(!showDetail);
-          }}
-          style={{ cursor: 'pointer' }}
-          width={'100%'}
-        >
-          {thinking ? (
-            <Flexbox align={'center'} gap={8} horizontal width={'100%'}>
-              <Icon color={theme.purple} icon={AtomIcon} />
-              <Flexbox className={styles.shinyText} horizontal>
-                {t('Thinking.thinking')}
-              </Flexbox>
+        {thinking ? (
+          <Flexbox align={'center'} gap={8} horizontal width={'100%'}>
+            <Icon color={theme.purple} icon={AtomIcon} />
+            <Flexbox className={styles.shinyText} horizontal>
+              {t('Thinking.thinking')}
             </Flexbox>
-          ) : (
-            <Flexbox align={'center'} gap={8} horizontal width={'100%'}>
-              <Icon color={showDetail ? theme.purple : undefined} icon={AtomIcon} />
-              <Flexbox>
-                {!duration
-                  ? t('Thinking.thoughtWithDuration')
-                  : t('Thinking.thought', { duration: ((duration || 0) / 1000).toFixed(1) })}
-              </Flexbox>
-            </Flexbox>
-          )}
-          <Flexbox gap={4} horizontal>
-            {showDetail && content && (
-              <div
-                onClick={(event) => {
-                  event.stopPropagation();
-                }}
-              >
-                <CopyButton content={content} size={'small'} title={t('copy', { ns: 'common' })} />
-              </div>
-            )}
-            <ActionIcon icon={showDetail ? ChevronDown : ChevronRight} size={'small'} />
           </Flexbox>
-        </Flexbox>
-        <AnimatePresence initial={false}>
-          {showDetail && (
-            <motion.div
-              animate="open"
-              exit="collapsed"
-              initial="collapsed"
-              style={{ overflow: 'hidden', padding: 12 }}
-              transition={{
-                duration: 0.2,
-                ease: [0.4, 0, 0.2, 1], // 使用 ease-out 缓动函数
-              }}
-              variants={{
-                collapsed: { opacity: 0, width: 'auto' },
-                open: { opacity: 1, width: 'auto' },
+        ) : (
+          <Flexbox align={'center'} gap={8} horizontal width={'100%'}>
+            <Icon color={showDetail ? theme.purple : undefined} icon={AtomIcon} />
+            <Flexbox>
+              {!duration
+                ? t('Thinking.thoughtWithDuration')
+                : t('Thinking.thought', { duration: ((duration || 0) / 1000).toFixed(1) })}
+            </Flexbox>
+          </Flexbox>
+        )}
+        <Flexbox gap={4} horizontal>
+          {showDetail && content && (
+            <div
+              onClick={(event) => {
+                event.stopPropagation();
               }}
             >
-              {typeof content === 'string' ? (
-                <Markdown
-                  animated={thinkingAnimated}
-                  citations={citations}
-                  variant={'chat'}
-                >
-                  {content}
-                </Markdown>
-              ) : (
-                content
-              )}
-            </motion.div>
+              <CopyButton content={content} size={'small'} title={t('copy', { ns: 'common' })} />
+            </div>
           )}
-        </AnimatePresence>
+          <ActionIcon icon={showDetail ? ChevronDown : ChevronRight} size={'small'} />
+        </Flexbox>
       </Flexbox>
-    );
-  },
-);
+      <AnimatePresence initial={false}>
+        {showDetail && (
+          <motion.div
+            animate="open"
+            exit="collapsed"
+            initial="collapsed"
+            style={{ overflow: 'hidden', padding: 12 }}
+            transition={{
+              duration: 0.2,
+              ease: [0.4, 0, 0.2, 1], // 使用 ease-out 缓动函数
+            }}
+            variants={{
+              collapsed: { opacity: 0, width: 'auto' },
+              open: { opacity: 1, width: 'auto' },
+            }}
+          >
+            {typeof content === 'string' ? (
+              <Markdown animated={thinkingAnimated} citations={citations} variant={'chat'}>
+                {content}
+              </Markdown>
+            ) : (
+              content
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </Flexbox>
+  );
+});
 
 export default Thinking;
