@@ -2,6 +2,73 @@
 
 # Changelog
 
+### [Version 1.88.14](https://github.com/lobehub/lobe-chat/compare/v1.88.13...v1.88.14)
+
+<sup>Released on **2025-05-28**</sup>
+
+#### 🐛 Bug Fixes
+
+- **misc**: Cant invoke the application after OIDC authorization in Windows 11.
+
+<br/>
+
+<details>
+<summary><kbd>Improvements and Fixes</kbd></summary>
+
+#### What's fixed
+
+- **misc**: Cant invoke the application after OIDC authorization in Windows 11, closes [#7900](https://github.com/lobehub/lobe-chat/issues/7900) ([585e386](https://github.com/lobehub/lobe-chat/commit/585e386))
+
+</details>
+
+<div align="right">
+
+[![](https://img.shields.io/badge/-BACK_TO_TOP-151515?style=flat-square)](#readme-top)
+
+</div>
+
+### [Version 1.88.13](https://github.com/lobehub/lobe-chat/compare/v1.88.12...v1.88.13)
+
+<sup>Released on **2025-05-27**</sup>
+
+<br/>
+
+<details>
+<summary><kbd>Improvements and Fixes</kbd></summary>
+
+</details>
+
+<div align="right">
+
+[![](https://img.shields.io/badge/-BACK_TO_TOP-151515?style=flat-square)](#readme-top)
+
+</div>
+
+### [Version 1.88.12](https://github.com/lobehub/lobe-chat/compare/v1.88.11...v1.88.12)
+
+<sup>Released on **2025-05-27**</sup>
+
+#### 💄 Styles
+
+- **misc**: Support adjust thinkingBudget in gemini 2.5 flash.
+
+<br/>
+
+<details>
+<summary><kbd>Improvements and Fixes</kbd></summary>
+
+#### Styles
+
+- **misc**: Support adjust thinkingBudget in gemini 2.5 flash, closes [#7947](https://github.com/lobehub/lobe-chat/issues/7947) ([a9db548](https://github.com/lobehub/lobe-chat/commit/a9db548))
+
+</details>
+
+<div align="right">
+
+[![](https://img.shields.io/badge/-BACK_TO_TOP-151515?style=flat-square)](#readme-top)
+
+</div>
+
 ### [Version 1.88.11](https://github.com/lobehub/lobe-chat/compare/v1.88.10...v1.88.11)
 
 <sup>Released on **2025-05-26**</sup>
