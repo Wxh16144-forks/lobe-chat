@@ -6,5 +6,5 @@ export interface UserGeneralConfig {
   mermaidTheme?: MermaidProps['theme'];
   neutralColor?: NeutralColors;
   primaryColor?: PrimaryColors;
-  transitionMode?: 'smooth' | 'stream';
+  transitionMode?: 'normal' | 'smooth' | 'stream';
 }

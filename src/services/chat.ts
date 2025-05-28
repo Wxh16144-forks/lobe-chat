@@ -360,8 +360,7 @@ class ChatService {
       sdkType = providerConfig?.settings.sdkType || 'openai';
     }
 
-    const userPreferSmoothing =
-      userGeneralSettingsSelectors.transitionMode(getUserStoreState()) === 'stream';
+    const userPerfeTransitionMode = userGeneralSettingsSelectors.transitionMode(getUserStoreState());
 
     return fetchSSE(API_ENDPOINTS.chat(sdkType), {
       body: JSON.stringify(payload),
@@ -376,7 +375,11 @@ class ChatService {
       smoothing: merge(
         {},
         providerConfig?.settings?.smoothing || /** @deprecated in V2 */ providerConfig?.smoothing,
-        normalizeSmoothing(userPreferSmoothing),
+        normalizeSmoothing(
+          userPerfeTransitionMode === 'normal'
+            ? 'normal'
+            : userPerfeTransitionMode === 'stream'
+        ),
         normalizeSmoothing(smoothing),
       )
     });

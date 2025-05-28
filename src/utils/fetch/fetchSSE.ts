@@ -314,6 +314,7 @@ export const fetchSSE = async (url: string, options: RequestInit & FetchSSEOptio
   let response!: Response;
 
   const { text, toolsCalling, speed: smoothingSpeed } = normalizeSmoothing(options.smoothing);
+  const normalText = text === 'normal';
   const textSmoothing = typeof text === 'boolean' && text;
   const toolsCallingSmoothing = typeof toolsCalling === 'boolean' && toolsCalling;
 
@@ -446,7 +447,10 @@ export const fetchSSE = async (url: string, options: RequestInit & FetchSSEOptio
           // skip empty text
           if (!data) break;
 
-          if (textSmoothing) {
+          if (normalText) {
+            output += data;
+            options.onMessageHandle?.({ text: data, type: 'text' });
+          } else if (textSmoothing) {
             textController.pushToQueue(data);
 
             if (!textController.isAnimationActive) textController.startAnimation();
