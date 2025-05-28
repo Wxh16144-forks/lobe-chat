@@ -117,12 +117,12 @@ export interface ModelProviderCard {
    * @deprecated
    */
   proxyUrl?:
-  | {
-    desc?: string;
-    placeholder: string;
-    title?: string;
-  }
-  | false;
+    | {
+        desc?: string;
+        placeholder: string;
+        title?: string;
+      }
+    | false;
 
   settings: AiProviderSettings;
   /**

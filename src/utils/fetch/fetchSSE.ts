@@ -392,14 +392,14 @@ export const fetchSSE = async (url: string, options: RequestInit & FetchSSEOptio
           error.type
             ? error
             : {
-              body: {
+                body: {
+                  message: error.message,
+                  name: error.name,
+                  stack: error.stack,
+                },
                 message: error.message,
-                name: error.name,
-                stack: error.stack,
+                type: ChatErrorType.UnknownChatFetchError,
               },
-              message: error.message,
-              type: ChatErrorType.UnknownChatFetchError,
-            },
         );
         return;
       }
