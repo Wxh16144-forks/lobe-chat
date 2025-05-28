@@ -20,7 +20,7 @@ import { FORM_STYLE } from '@/const/layoutTokens';
 import { useUserStore } from '@/store/user';
 import { settingsSelectors } from '@/store/user/selectors';
 
-import AnimatedChatPreview from './AnimatedChatPreview';
+import ChatTransitionPreview from './ChatTransitionPreview';
 import ChatPreview from './ChatPreview';
 import HighlighterPreview from './HighlighterPreview';
 import MermaidPreview from './MermaidPreview';
@@ -37,9 +37,9 @@ const ChatAppearance = memo(() => {
     children: [
       {
         children: (
-          <AnimatedChatPreview
+          <ChatTransitionPreview
             key={general.transitionMode}
-            transitionMode={general.transitionMode}
+            mode={general.transitionMode}
           />
         ),
         noStyle: true,
@@ -50,16 +50,16 @@ const ChatAppearance = memo(() => {
             block
             options={[
               {
-                label: t('settingChatAppearance.transitionMode.options.routine'),
-                value: 'routine',
+                label: t('settingChatAppearance.transitionMode.options.none'),
+                value: 'none',
+              },
+              {
+                label: t('settingChatAppearance.transitionMode.options.fadeIn'),
+                value: 'fadeIn',
               },
               {
                 label: t('settingChatAppearance.transitionMode.options.smooth'),
                 value: 'smooth',
-              },
-              {
-                label: t('settingChatAppearance.transitionMode.options.stream'),
-                value: 'stream',
               },
             ]}
           />

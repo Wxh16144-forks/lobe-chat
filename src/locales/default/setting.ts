@@ -248,9 +248,9 @@ export default {
     transitionMode: {
       desc: '聊天消息的过渡动画',
       options: {
-        routine: '常规',
+        fadeIn: '淡入',
+        none: "无",
         smooth: '平滑',
-        stream: '流式',
       },
       title: '过渡动画',
     },

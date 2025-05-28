@@ -84,7 +84,7 @@ const findDeploymentName = (model: string, provider: string) => {
   return deploymentId;
 };
 
-export const normalizeSmoothing = (smoothing?: SmoothingParams | boolean | 'routine') => {
+export const normalizeSmoothing = (smoothing?: SmoothingParams | boolean | 'none') => {
   return typeof smoothing === 'object'
     ? smoothing
     : { text: smoothing, toolsCalling: smoothing } satisfies SmoothingParams;
@@ -360,7 +360,7 @@ class ChatService {
       sdkType = providerConfig?.settings.sdkType || 'openai';
     }
 
-    const userPerfeTransitionMode = userGeneralSettingsSelectors.transitionMode(getUserStoreState());
+    const userPreferTransitionMode = userGeneralSettingsSelectors.transitionMode(getUserStoreState());
 
     return fetchSSE(API_ENDPOINTS.chat(sdkType), {
       body: JSON.stringify(payload),
@@ -376,9 +376,9 @@ class ChatService {
         {},
         providerConfig?.settings?.smoothing || /** @deprecated in V2 */ providerConfig?.smoothing,
         normalizeSmoothing(
-          userPerfeTransitionMode === 'routine'
-            ? 'routine'
-            : userPerfeTransitionMode === 'stream'
+          userPreferTransitionMode === 'none'
+            ? 'none'
+            : userPreferTransitionMode === 'smooth'
         ),
         normalizeSmoothing(smoothing),
       )

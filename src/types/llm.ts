@@ -61,8 +61,11 @@ export interface ChatModelCard {
 
 export interface SmoothingParams {
   speed?: number;
-  text?: boolean | 'routine';
-  toolsCalling?: boolean | 'routine';
+  /**
+   * @description `true` => `'smooth'`, `false` => `'fadeIn'`
+   */
+  text?: boolean | 'none';
+  toolsCalling?: boolean | 'none';
 }
 
 export interface ModelProviderCard {

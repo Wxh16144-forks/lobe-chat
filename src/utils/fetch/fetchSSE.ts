@@ -92,7 +92,7 @@ export interface FetchSSEOptions {
       | MessageBase64ImageChunk
       | MessageSpeedChunk,
   ) => void;
-  smoothing?: SmoothingParams | boolean | 'routine';
+  smoothing?: SmoothingParams | boolean | 'none';
 }
 
 const START_ANIMATION_SPEED = 10; // 默认起始速度
@@ -314,7 +314,7 @@ export const fetchSSE = async (url: string, options: RequestInit & FetchSSEOptio
   let response!: Response;
 
   const { text, toolsCalling, speed: smoothingSpeed } = normalizeSmoothing(options.smoothing);
-  const normalText = text === 'routine';
+  const shouldSkipTextProcessing = text === 'none';
   const textSmoothing = typeof text === 'boolean' && text;
   const toolsCallingSmoothing = typeof toolsCalling === 'boolean' && toolsCalling;
 
@@ -447,7 +447,7 @@ export const fetchSSE = async (url: string, options: RequestInit & FetchSSEOptio
           // skip empty text
           if (!data) break;
 
-          if (normalText) {
+          if (shouldSkipTextProcessing) {
             output += data;
             options.onMessageHandle?.({ text: data, type: 'text' });
           } else if (textSmoothing) {

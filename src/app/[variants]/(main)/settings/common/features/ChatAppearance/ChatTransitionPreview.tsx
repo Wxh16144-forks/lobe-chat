@@ -6,6 +6,7 @@ import { memo, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { DEFAULT_INBOX_AVATAR } from '@/const/meta';
+import { UserGeneralConfig } from '@/types/user/settings';
 
 const data = `
 ### Features
@@ -18,28 +19,28 @@ const data = `
 
 const streamingSpeed = 25; // ms per character
 
-interface AnimatedChatPreviewProps {
-  transitionMode: 'routine' | 'smooth' | 'stream';
+interface ChatTransitionPreviewProps {
+  mode: UserGeneralConfig['transitionMode'];
 }
 
 const randomInlRange = (min = 0, max = min + 10) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const AnimatedChatPreview = memo<AnimatedChatPreviewProps>(({ transitionMode }) => {
+const ChatTransitionPreview = memo<ChatTransitionPreviewProps>(({ mode }) => {
   const [streamedContent, setStreamedContent] = useState(() => {
-    if (transitionMode === 'routine') {
+    if (mode === 'none') {
       return data.slice(0, Math.max(0, randomInlRange(10, 100)));
     }
     return '';
   });
 
   const chunkStep = useMemo(() => {
-    if (transitionMode === 'routine') {
+    if (mode === 'none') {
       return Math.ceil(data.length / randomInlRange(3, 5));
     }
     return 3;
-  }, [transitionMode]);
+  }, [mode]);
 
   const [isStreaming, setIsStreaming] = useState(true);
   const { t } = useTranslation('common');
@@ -91,18 +92,14 @@ const AnimatedChatPreview = memo<AnimatedChatPreviewProps>(({ transitionMode }) 
                 icon: RotateCwIcon,
                 key: 'reset',
                 onClick: handleReset,
-                title: t('reset'),
+                title: t('retry'),
               },
             ]}
             size="small"
           />
         }
-        avatar={{
-          avatar: DEFAULT_INBOX_AVATAR,
-        }}
-        markdownProps={{
-          animated: transitionMode === 'smooth',
-        }}
+        avatar={{ avatar: DEFAULT_INBOX_AVATAR }}
+        markdownProps={{ animated: mode === 'fadeIn' }}
         message={streamedContent}
         variant="bubble"
         width={'100%'}
@@ -111,4 +108,4 @@ const AnimatedChatPreview = memo<AnimatedChatPreviewProps>(({ transitionMode }) 
   );
 });
 
-export default AnimatedChatPreview;
+export default ChatTransitionPreview;
