@@ -92,7 +92,7 @@ const Item = memo<ChatListItemProps>(
 
     // when the message is in RAG flow or the AI generating, it should be in loading state
     const isProcessing = isInRAGFlow || generating;
-    const animated = transitionMode === 'smooth' && generating;
+    const animated = transitionMode === 'fadeIn' && generating;
 
     const onAvatarsClick = useAvatarsClick(item?.role);
 

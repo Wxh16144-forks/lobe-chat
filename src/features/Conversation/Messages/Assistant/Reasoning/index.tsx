@@ -21,7 +21,7 @@ const Reasoning = memo<ReasoningProps>(({ content = '', duration, id }) => {
       content={content}
       duration={duration}
       thinking={isReasoning}
-      thinkingAnimated={transitionMode === 'smooth' && isReasoning}
+      thinkingAnimated={transitionMode === 'fadeIn' && isReasoning}
     />
   );
 });

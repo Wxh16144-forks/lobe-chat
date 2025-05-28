@@ -34,7 +34,7 @@ const Render = memo<MarkdownElementProps>(({ children, id }) => {
       citations={citations}
       content={children as string}
       thinking={isGenerating}
-      thinkingAnimated={transitionMode === 'smooth' && isGenerating}
+      thinkingAnimated={transitionMode === 'fadeIn' && isGenerating}
     />
   );
 });
