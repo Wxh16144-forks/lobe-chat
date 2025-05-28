@@ -1,4 +1,3 @@
-import { isObject } from 'lodash-es';
 
 import { MESSAGE_CANCEL_FLAT } from '@/const/message';
 import { LOBE_CHAT_OBSERVATION_ID, LOBE_CHAT_TRACE_ID } from '@/const/trace';
@@ -20,6 +19,7 @@ import { nanoid } from '@/utils/uuid';
 
 import { fetchEventSource } from './fetchEventSource';
 import { getMessageError } from './parseError';
+import { normalizeSmoothing } from '@/services/chat';
 
 type SSEFinishType = 'done' | 'error' | 'abort';
 
@@ -313,13 +313,9 @@ export const fetchSSE = async (url: string, options: RequestInit & FetchSSEOptio
   let finishedType: SSEFinishType = 'done';
   let response!: Response;
 
-  const { smoothing } = options;
-
-  const textSmoothing = typeof smoothing === 'boolean' ? smoothing : (smoothing?.text ?? false);
-  const toolsCallingSmoothing =
-    typeof smoothing === 'boolean' ? smoothing : (smoothing?.toolsCalling ?? false);
-
-  const smoothingSpeed = isObject(smoothing) ? smoothing.speed : undefined;
+  const { text, toolsCalling, speed: smoothingSpeed } = normalizeSmoothing(options.smoothing);
+  const textSmoothing = typeof text === 'boolean' && text;
+  const toolsCallingSmoothing = typeof toolsCalling === 'boolean' && toolsCalling;
 
   // 添加文本buffer和计时器相关变量
   let textBuffer = '';

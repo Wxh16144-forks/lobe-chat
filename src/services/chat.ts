@@ -84,7 +84,7 @@ const findDeploymentName = (model: string, provider: string) => {
   return deploymentId;
 };
 
-const normalizeSmoothing = (smoothing?: SmoothingParams | boolean) => {
+export const normalizeSmoothing = (smoothing?: SmoothingParams | boolean | 'normal') => {
   return typeof smoothing === 'object'
     ? smoothing
     : { text: smoothing, toolsCalling: smoothing } satisfies SmoothingParams;

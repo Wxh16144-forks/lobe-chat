@@ -61,8 +61,8 @@ export interface ChatModelCard {
 
 export interface SmoothingParams {
   speed?: number;
-  text?: boolean;
-  toolsCalling?: boolean;
+  text?: boolean | 'normal';
+  toolsCalling?: boolean | 'normal';
 }
 
 export interface ModelProviderCard {
