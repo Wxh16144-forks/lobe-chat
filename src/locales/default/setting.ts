@@ -248,6 +248,7 @@ export default {
     transitionMode: {
       desc: '聊天消息的过渡动画',
       options: {
+        routine: '常规',
         smooth: '平滑',
         stream: '流式',
       },

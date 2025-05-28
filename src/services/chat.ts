@@ -84,7 +84,7 @@ const findDeploymentName = (model: string, provider: string) => {
   return deploymentId;
 };
 
-export const normalizeSmoothing = (smoothing?: SmoothingParams | boolean | 'normal') => {
+export const normalizeSmoothing = (smoothing?: SmoothingParams | boolean | 'routine') => {
   return typeof smoothing === 'object'
     ? smoothing
     : { text: smoothing, toolsCalling: smoothing } satisfies SmoothingParams;
@@ -376,8 +376,8 @@ class ChatService {
         {},
         providerConfig?.settings?.smoothing || /** @deprecated in V2 */ providerConfig?.smoothing,
         normalizeSmoothing(
-          userPerfeTransitionMode === 'normal'
-            ? 'normal'
+          userPerfeTransitionMode === 'routine'
+            ? 'routine'
             : userPerfeTransitionMode === 'stream'
         ),
         normalizeSmoothing(smoothing),

@@ -122,7 +122,7 @@ describe('fetchSSE', () => {
     });
   });
 
-  it('should handle text event with smoothing correctly', async () => {
+  it.only('should handle text event with smoothing correctly', async () => {
     const mockOnMessageHandle = vi.fn();
     const mockOnFinish = vi.fn();
 
@@ -160,6 +160,36 @@ describe('fetchSSE', () => {
     });
 
     // more assertions for each character...
+    expect(mockOnFinish).toHaveBeenCalledWith('Hello World', {
+      observationId: null,
+      toolCalls: undefined,
+      traceId: null,
+      type: 'done',
+    });
+  });
+
+  it.only('should not handle text events', async () => {
+    const mockOnMessageHandle = vi.fn();
+    const mockOnFinish = vi.fn();
+
+    (fetchEventSource as any).mockImplementationOnce(
+      async (url: string, options: FetchEventSourceInit) => {
+        options.onopen!({ clone: () => ({ ok: true, headers: new Headers() }) } as any);
+        options.onmessage!({ event: 'text', data: JSON.stringify('Hello') } as any);
+        await sleep(100);
+        options.onmessage!({ event: 'text', data: JSON.stringify(' World') } as any);
+      },
+    );
+
+    await fetchSSE('/', {
+      onMessageHandle: mockOnMessageHandle,
+      onFinish: mockOnFinish,
+      smoothing: 'routine',
+    });
+
+    expect(mockOnMessageHandle).toHaveBeenNthCalledWith(1, { text: 'Hello', type: 'text' });
+    expect(mockOnMessageHandle).toHaveBeenNthCalledWith(2, { text: ' World', type: 'text' });
+
     expect(mockOnFinish).toHaveBeenCalledWith('Hello World', {
       observationId: null,
       toolCalls: undefined,
@@ -432,7 +462,7 @@ describe('fetchSSE', () => {
 
       try {
         await fetchSSE('/', { onErrorHandle: mockOnErrorHandle });
-      } catch (e) {}
+      } catch (e) { }
 
       expect(mockOnErrorHandle).toHaveBeenCalledWith(mockError);
     });
@@ -449,7 +479,7 @@ describe('fetchSSE', () => {
 
       try {
         await fetchSSE('/', { onErrorHandle: mockOnErrorHandle });
-      } catch (e) {}
+      } catch (e) { }
 
       expect(mockOnErrorHandle).toHaveBeenCalledWith({
         type: 'UnknownChatFetchError',
@@ -474,7 +504,7 @@ describe('fetchSSE', () => {
 
           try {
             await options.onopen!(res as any);
-          } catch (e) {}
+          } catch (e) { }
         },
       );
 
@@ -508,7 +538,7 @@ describe('fetchSSE', () => {
 
       try {
         await fetchSSE('/', { onErrorHandle: mockOnErrorHandle });
-      } catch (e) {}
+      } catch (e) { }
 
       expect(mockOnErrorHandle).toHaveBeenCalledWith(mockError);
     });
@@ -525,7 +555,7 @@ describe('fetchSSE', () => {
 
       try {
         await fetchSSE('/', { onErrorHandle: mockOnErrorHandle });
-      } catch (e) {}
+      } catch (e) { }
 
       expect(mockOnErrorHandle).toHaveBeenCalledWith({
         body: {

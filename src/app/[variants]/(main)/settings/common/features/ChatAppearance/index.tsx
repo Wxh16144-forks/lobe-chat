@@ -38,8 +38,8 @@ const ChatAppearance = memo(() => {
       {
         children: (
           <AnimatedChatPreview
-            animated={general.transitionMode === 'smooth'}
             key={general.transitionMode}
+            transitionMode={general.transitionMode}
           />
         ),
         noStyle: true,
@@ -49,6 +49,10 @@ const ChatAppearance = memo(() => {
           <Segmented
             block
             options={[
+              {
+                label: t('settingChatAppearance.transitionMode.options.routine'),
+                value: 'routine',
+              },
               {
                 label: t('settingChatAppearance.transitionMode.options.smooth'),
                 value: 'smooth',

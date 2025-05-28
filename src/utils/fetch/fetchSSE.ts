@@ -92,7 +92,7 @@ export interface FetchSSEOptions {
       | MessageBase64ImageChunk
       | MessageSpeedChunk,
   ) => void;
-  smoothing?: SmoothingParams | boolean;
+  smoothing?: SmoothingParams | boolean | 'routine';
 }
 
 const START_ANIMATION_SPEED = 10; // 默认起始速度
@@ -314,7 +314,7 @@ export const fetchSSE = async (url: string, options: RequestInit & FetchSSEOptio
   let response!: Response;
 
   const { text, toolsCalling, speed: smoothingSpeed } = normalizeSmoothing(options.smoothing);
-  const normalText = text === 'normal';
+  const normalText = text === 'routine';
   const textSmoothing = typeof text === 'boolean' && text;
   const toolsCallingSmoothing = typeof toolsCalling === 'boolean' && toolsCalling;
 
@@ -392,14 +392,14 @@ export const fetchSSE = async (url: string, options: RequestInit & FetchSSEOptio
           error.type
             ? error
             : {
-                body: {
-                  message: error.message,
-                  name: error.name,
-                  stack: error.stack,
-                },
+              body: {
                 message: error.message,
-                type: ChatErrorType.UnknownChatFetchError,
+                name: error.name,
+                stack: error.stack,
               },
+              message: error.message,
+              type: ChatErrorType.UnknownChatFetchError,
+            },
         );
         return;
       }

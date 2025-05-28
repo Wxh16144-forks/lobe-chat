@@ -61,8 +61,8 @@ export interface ChatModelCard {
 
 export interface SmoothingParams {
   speed?: number;
-  text?: boolean | 'normal';
-  toolsCalling?: boolean | 'normal';
+  text?: boolean | 'routine';
+  toolsCalling?: boolean | 'routine';
 }
 
 export interface ModelProviderCard {
@@ -114,12 +114,12 @@ export interface ModelProviderCard {
    * @deprecated
    */
   proxyUrl?:
-    | {
-        desc?: string;
-        placeholder: string;
-        title?: string;
-      }
-    | false;
+  | {
+    desc?: string;
+    placeholder: string;
+    title?: string;
+  }
+  | false;
 
   settings: AiProviderSettings;
   /**

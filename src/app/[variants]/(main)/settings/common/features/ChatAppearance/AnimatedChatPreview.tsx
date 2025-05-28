@@ -2,7 +2,7 @@ import { ActionIconGroup, Block } from '@lobehub/ui';
 import { ChatItem } from '@lobehub/ui/chat';
 import { useTheme } from 'antd-style';
 import { RotateCwIcon } from 'lucide-react';
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { DEFAULT_INBOX_AVATAR } from '@/const/meta';
@@ -16,14 +16,31 @@ const data = `
 - 🛠️ Plugins: Function Calling & real-time data
 `;
 
-const streamingSpeed = 25; // ms
+const streamingSpeed = 25; // ms per character
 
 interface AnimatedChatPreviewProps {
-  animated?: boolean;
+  transitionMode: 'routine' | 'smooth' | 'stream';
 }
 
-const AnimatedChatPreview = memo<AnimatedChatPreviewProps>(({ animated }) => {
-  const [streamedContent, setStreamedContent] = useState('');
+const randomInlRange = (min = 0, max = min + 10) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const AnimatedChatPreview = memo<AnimatedChatPreviewProps>(({ transitionMode }) => {
+  const [streamedContent, setStreamedContent] = useState(() => {
+    if (transitionMode === 'routine') {
+      return data.slice(0, Math.max(0, randomInlRange(10, 100)));
+    }
+    return '';
+  });
+
+  const chunkStep = useMemo(() => {
+    if (transitionMode === 'routine') {
+      return Math.ceil(data.length / randomInlRange(3, 5));
+    }
+    return 3;
+  }, [transitionMode]);
+
   const [isStreaming, setIsStreaming] = useState(true);
   const { t } = useTranslation('common');
   const token = useTheme();
@@ -39,7 +56,7 @@ const AnimatedChatPreview = memo<AnimatedChatPreviewProps>(({ animated }) => {
     const intervalId = setInterval(() => {
       if (currentPosition < data.length) {
         // Stream character by character
-        const nextChunkSize = Math.min(3, data.length - currentPosition);
+        const nextChunkSize = Math.min(chunkStep, data.length - currentPosition);
         const nextContent = data.slice(0, Math.max(0, currentPosition + nextChunkSize));
         setStreamedContent(nextContent);
         currentPosition += nextChunkSize;
@@ -50,7 +67,7 @@ const AnimatedChatPreview = memo<AnimatedChatPreviewProps>(({ animated }) => {
     }, streamingSpeed);
 
     return () => clearInterval(intervalId);
-  }, [isStreaming, streamedContent.length]);
+  }, [isStreaming, streamedContent.length, chunkStep]);
 
   const handleReset = () => {
     setStreamedContent('');
@@ -84,7 +101,7 @@ const AnimatedChatPreview = memo<AnimatedChatPreviewProps>(({ animated }) => {
           avatar: DEFAULT_INBOX_AVATAR,
         }}
         markdownProps={{
-          animated: animated,
+          animated: transitionMode === 'smooth',
         }}
         message={streamedContent}
         variant="bubble"

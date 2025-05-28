@@ -50,12 +50,12 @@ export interface AiProviderSettings {
   modelEditable?: boolean;
 
   proxyUrl?:
-    | {
-        desc?: string;
-        placeholder: string;
-        title?: string;
-      }
-    | false;
+  | {
+    desc?: string;
+    placeholder: string;
+    title?: string;
+  }
+  | false;
 
   /**
    * default openai
