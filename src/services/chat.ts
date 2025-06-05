@@ -29,6 +29,7 @@ import {
   modelConfigSelectors,
   modelProviderSelectors,
   preferenceSelectors,
+  userGeneralSettingsSelectors,
   userProfileSelectors,
 } from '@/store/user/selectors';
 import { WebBrowsingManifest } from '@/tools/web-browsing';
@@ -38,7 +39,12 @@ import { ChatMessage, MessageToolCall } from '@/types/message';
 import type { ChatStreamPayload, OpenAIChatMessage } from '@/types/openai/chat';
 import { UserMessageContentPart } from '@/types/openai/chat';
 import { createErrorResponse } from '@/utils/errorResponse';
-import { FetchSSEOptions, fetchSSE, getMessageError } from '@/utils/fetch';
+import {
+  FetchSSEOptions,
+  fetchSSE,
+  getMessageError,
+  standardizeAnimationStyle,
+} from '@/utils/fetch';
 import { genToolCallingName } from '@/utils/toolCall';
 import { createTraceHeader, getTraceId } from '@/utils/trace';
 
@@ -287,7 +293,7 @@ class ChatService {
   };
 
   getChatCompletion = async (params: Partial<ChatStreamPayload>, options?: FetchOptions) => {
-    const { signal } = options ?? {};
+    const { signal, responseAnimation } = options ?? {};
 
     const { provider = ModelProvider.OpenAI, ...res } = params;
 
@@ -365,6 +371,9 @@ class ChatService {
       sdkType = providerConfig?.settings.sdkType || 'openai';
     }
 
+    const userPreferTransitionMode =
+      userGeneralSettingsSelectors.transitionMode(getUserStoreState());
+
     return fetchSSE(API_ENDPOINTS.chat(sdkType), {
       body: JSON.stringify(payload),
       fetcher: fetcher,
@@ -374,11 +383,11 @@ class ChatService {
       onErrorHandle: options?.onErrorHandle,
       onFinish: options?.onFinish,
       onMessageHandle: options?.onMessageHandle,
+      responseAnimation: [userPreferTransitionMode, responseAnimation].reduce(
+        (acc, cur) => merge(acc, standardizeAnimationStyle(cur)),
+        providerConfig?.settings?.responseAnimation ?? {},
+      ),
       signal,
-      smoothing:
-        providerConfig?.settings?.smoothing ||
-        // @deprecated in V2
-        providerConfig?.smoothing,
     });
   };
 
