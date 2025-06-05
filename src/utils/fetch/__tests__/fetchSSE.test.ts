@@ -38,7 +38,7 @@ describe('fetchSSE', () => {
     await fetchSSE('/', {
       onMessageHandle: mockOnMessageHandle,
       onFinish: mockOnFinish,
-      responseAnimation: 'fadeIn'
+      responseAnimation: 'fadeIn',
     });
 
     expect(mockOnMessageHandle).toHaveBeenNthCalledWith(1, { text: 'Hello World', type: 'text' });
@@ -75,7 +75,7 @@ describe('fetchSSE', () => {
     await fetchSSE('/', {
       onMessageHandle: mockOnMessageHandle,
       onFinish: mockOnFinish,
-      responseAnimation: 'fadeIn'
+      responseAnimation: 'fadeIn',
     });
 
     expect(mockOnMessageHandle).toHaveBeenNthCalledWith(1, {
@@ -465,7 +465,7 @@ describe('fetchSSE', () => {
 
       try {
         await fetchSSE('/', { onErrorHandle: mockOnErrorHandle });
-      } catch (e) { }
+      } catch (e) {}
 
       expect(mockOnErrorHandle).toHaveBeenCalledWith(mockError);
     });
@@ -482,7 +482,7 @@ describe('fetchSSE', () => {
 
       try {
         await fetchSSE('/', { onErrorHandle: mockOnErrorHandle });
-      } catch (e) { }
+      } catch (e) {}
 
       expect(mockOnErrorHandle).toHaveBeenCalledWith({
         type: 'UnknownChatFetchError',
@@ -507,7 +507,7 @@ describe('fetchSSE', () => {
 
           try {
             await options.onopen!(res as any);
-          } catch (e) { }
+          } catch (e) {}
         },
       );
 
@@ -541,7 +541,7 @@ describe('fetchSSE', () => {
 
       try {
         await fetchSSE('/', { onErrorHandle: mockOnErrorHandle });
-      } catch (e) { }
+      } catch (e) {}
 
       expect(mockOnErrorHandle).toHaveBeenCalledWith(mockError);
     });
@@ -558,7 +558,7 @@ describe('fetchSSE', () => {
 
       try {
         await fetchSSE('/', { onErrorHandle: mockOnErrorHandle });
-      } catch (e) { }
+      } catch (e) {}
 
       expect(mockOnErrorHandle).toHaveBeenCalledWith({
         body: {
