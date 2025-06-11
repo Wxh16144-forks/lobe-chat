@@ -26,9 +26,10 @@ export default {
   defaultList: '默认列表',
   defaultSession: '自定义助手',
   duplicateSession: {
+    duplicate: "副本",
     loading: '复制中...',
     success: '复制成功',
-    title: '{{title}} 副本',
+    title: '{{title}} 副本'
   },
   duplicateTitle: '{{title}} 副本',
   emptyAgent: '暂无助手',

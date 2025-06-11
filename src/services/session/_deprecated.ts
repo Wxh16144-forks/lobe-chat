@@ -13,6 +13,8 @@ import {
   LobeAgentSession,
   LobeSessionType,
   LobeSessions,
+  SessionDefaultGroup,
+  SessionGroupId,
   SessionGroupItem,
   SessionGroups,
 } from '@/types/session';
@@ -185,5 +187,51 @@ export class ClientService implements ISessionService {
 
   async removeSessionGroups() {
     return SessionGroupModel.clear();
+  }
+  async detectNextValidSessionTitle(params: {
+    baseTitle: string;
+    duplicateSymbol?: string;
+    groupId?: SessionGroupId;
+  }) {
+    const {
+      baseTitle,
+      groupId = SessionDefaultGroup.Default,
+      duplicateSymbol = 'copy',
+    } = params;
+
+    const sessions = await SessionModel.querySessionsByGroupId(groupId);
+    const titleSet = new Set<string>();
+
+    sessions.forEach((session) => {
+      const title = session.meta?.title;
+      if (title) {
+        titleSet.add(title);
+      }
+    });
+
+    if (!titleSet.has(baseTitle)) {
+      return baseTitle;
+    }
+
+    const subfixPattern = new RegExp(`\\s${duplicateSymbol}\\s(\\d+)$`);
+    const match = baseTitle.match(subfixPattern);
+
+    const generateUniqueTitle = (prefix: string) => {
+      let count = 1;
+      let newTitle = `${prefix} ${duplicateSymbol} ${count}`;
+      while (titleSet.has(newTitle)) {
+        count++;
+        newTitle = `${prefix} ${duplicateSymbol} ${count}`;
+      }
+      return newTitle;
+    };
+
+
+    if (match) {
+      const basePrefix = baseTitle.replace(subfixPattern, '');
+      return generateUniqueTitle(basePrefix);
+    }
+
+    return generateUniqueTitle(baseTitle);
   }
 }

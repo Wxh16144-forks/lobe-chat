@@ -126,7 +126,16 @@ export const createSessionSlice: StateCreator<
     if (!session) return;
     const title = sessionMetaSelectors.getTitle(session.meta);
 
-    const newTitle = t('duplicateSession.title', { ns: 'chat', title: title });
+    let newTitle: string;
+    try {
+      newTitle = await sessionService.detectNextValidSessionTitle({
+        baseTitle: title,
+        duplicateSymbol: t('duplicateSession.duplicate', { ns: 'chat' }),
+        groupId: session.group,
+      });
+    } catch {
+      newTitle = t('duplicateSession.title', { ns: 'chat', title });
+    }
 
     const messageLoadingKey = 'duplicateSession.loading';
 

@@ -9,6 +9,7 @@ import {
   LobeAgentSession,
   LobeSessionType,
   LobeSessions,
+  SessionGroupId,
   SessionGroupItem,
   SessionGroups,
   SessionRankItem,
@@ -60,12 +61,17 @@ export interface ISessionService {
   removeSession(id: string): Promise<any>;
   removeAllSessions(): Promise<any>;
 
+  detectNextValidSessionTitle(params: {
+    groupId?: SessionGroupId;
+    baseTitle: string;
+    duplicateSymbol?: string;
+  }): Promise<string>;
+
   // ************************************** //
   // ***********  SessionGroup  *********** //
   // ************************************** //
 
   createSessionGroup(name: string, sort?: number): Promise<string>;
-
   /**
    * 需要废弃
    * @deprecated

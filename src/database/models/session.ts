@@ -73,7 +73,7 @@ export class SessionModel {
 
     const data = await this.findSessionsByKeywords({ keyword: keywordLowerCase });
 
-    return data.map((item) => this.mapSessionItem(item as any));
+      return data.map((item) => this.mapSessionItem(item as any));
   };
 
   findByIdOrSlug = async (
@@ -91,6 +91,19 @@ export class SessionModel {
 
     return { ...result, agent: (result?.agentsToSessions?.[0] as any)?.agent } as any;
   };
+
+  queryByGroupId = async (groupId: string): Promise<LobeAgentSession[]> => {
+    const items = await this.db.query.sessions.findMany({
+      where: and(
+        eq(sessions.userId, this.userId),
+        eq(sessions.groupId, groupId),
+        not(eq(sessions.slug, INBOX_SESSION_ID)),
+      ),
+      with: { agentsToSessions: { columns: {}, with: { agent: true } }, group: true },
+    });
+
+    return items.map((item) => this.mapSessionItem(item as any));
+  }
 
   count = async (params?: {
     endDate?: string;

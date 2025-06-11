@@ -10,6 +10,7 @@ import { AgentChatConfigSchema } from '@/types/agent';
 import { LobeMetaDataSchema } from '@/types/meta';
 import { BatchTaskResult } from '@/types/service';
 import { ChatSessionList } from '@/types/session';
+import { ClientService } from '@/services/session/client';
 
 const sessionProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
   const { ctx } = opts;
@@ -95,6 +96,22 @@ export const sessionRouter = router({
       return data.id;
     }),
 
+  detectNextValidSessionTitle: publicProcedure
+    .input(
+      z.object({
+        baseTitle: z.string(),
+        duplicateSymbol: z.string().optional(),
+        groupId: z.string().optional(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      if (!ctx.userId) return  input.baseTitle;
+
+      const c = new ClientService(ctx.userId!);
+
+      return c.detectNextValidSessionTitle(input);
+    }),
+
   getGroupedSessions: publicProcedure.query(async ({ ctx }): Promise<ChatSessionList> => {
     if (!ctx.userId) return { sessionGroups: [], sessions: [] };
 
@@ -136,7 +153,6 @@ export const sessionRouter = router({
     .query(async ({ input, ctx }) => {
       return ctx.sessionModel.queryByKeyword(input.keywords);
     }),
-
   updateSession: sessionProcedure
     .input(
       z.object({
@@ -159,6 +175,7 @@ export const sessionRouter = router({
         chatConfig: input.value,
       });
     }),
+
   updateSessionConfig: sessionProcedure
     .input(
       z.object({
@@ -168,7 +185,7 @@ export const sessionRouter = router({
     )
     .mutation(async ({ input, ctx }) => {
       return ctx.sessionModel.updateConfig(input.id, input.value);
-    }),
+    })
 });
 
 export type SessionRouter = typeof sessionRouter;

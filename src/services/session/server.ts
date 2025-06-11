@@ -85,6 +85,10 @@ export class ServerService implements ISessionService {
     return lambdaClient.session.removeAllSessions.mutate();
   };
 
+  detectNextValidSessionTitle: ISessionService['detectNextValidSessionTitle'] = (params) => {
+    return lambdaClient.session.detectNextValidSessionTitle.query(params);
+  };
+
   // ************************************** //
   // ***********  SessionGroup  *********** //
   // ************************************** //
