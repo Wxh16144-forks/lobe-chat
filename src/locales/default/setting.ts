@@ -53,6 +53,7 @@ export default {
     record: '按下按键以录制快捷键',
     reset: '重置为默认快捷键',
     title: '快捷键',
+    toSetting: '前往设置页修改',
   },
   llm: {
     aesGcm: '您的秘钥与代理地址等将使用 <1>AES-GCM</1> 加密算法进行加密',

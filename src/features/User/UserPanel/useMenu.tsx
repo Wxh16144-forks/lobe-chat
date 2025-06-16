@@ -32,7 +32,6 @@ import {
   UTM_SOURCE,
   mailTo,
 } from '@/const/url';
-import { isDesktop } from '@/const/version';
 import DataImporter from '@/features/DataImporter';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
 import { featureFlagsSelectors, useServerConfigStore } from '@/store/serverConfig';
@@ -40,6 +39,7 @@ import { useUserStore } from '@/store/user';
 import { authSelectors } from '@/store/user/selectors';
 
 import { useNewVersion } from './useNewVersion';
+import { isDesktop } from '@/const/version';
 
 const NewVersionBadge = memo(
   ({
@@ -83,11 +83,11 @@ export const useMenu = () => {
 
   const settings: MenuProps['items'] = [
     {
-      extra: isDesktop ? (
+      extra:(
         <div>
           <Hotkey keys={DEFAULT_HOTKEY_CONFIG.openSettings} />
         </div>
-      ) : undefined,
+      ),
       icon: <Icon icon={Settings2} />,
       key: 'setting',
       label: (

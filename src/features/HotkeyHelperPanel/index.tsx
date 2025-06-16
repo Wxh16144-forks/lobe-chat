@@ -1,7 +1,8 @@
 'use client';
 
-import { Grid, Icon, Modal, Segmented } from '@lobehub/ui';
+import { Button, Grid, Icon, Modal, Segmented } from '@lobehub/ui';
 import { MessageSquare, Settings2 } from 'lucide-react';
+import Link from 'next/link';
 import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -20,10 +21,16 @@ const HotkeyHelperPanel = memo(() => {
 
   const handleClose = () => updateSystemStatus({ showHotkeyHelper: false });
 
+  const toSetting = () => {}
+
   return (
     <Modal
       centered
-      footer={null}
+      footer={
+        <Link href="/settings/hotkey">
+          <Button type="primary">{t('hotkey.toSetting')}</Button>
+        </Link>
+      }
       onCancel={handleClose}
       open={open}
       styles={{
